@@ -3,10 +3,7 @@
 #include"Teacher.h"
 #include "graduate.h"
 
-#define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
-#define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
-#define GRADUATE_TAKE_PARAMETERS  const std::string& subject
-#define GRADUATE_GIVE_PARAMETERS subject
+
 
 
 
