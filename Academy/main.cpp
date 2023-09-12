@@ -41,7 +41,7 @@ public:
 		set_age(age);
 		std::cout << "HConstructor:\t" << this << std::endl;
 	}
-	~Human() 
+	virtual~Human() 
 	{
 		std::cout << "HDestructor:\t" << this << std::endl;
 	}
@@ -218,13 +218,19 @@ void main()
 	{
 		new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 90, 95),
 		new Teacher("White", "Walter", 50, "Chemistry", 20),
-		new Graduate("Schrader", "Hank", 40, "Criminalistic", "OBN", 80, 70, "How to catch Heisenberg")
+		new Graduate("Schrader", "Hank", 40, "Criminalistic", "OBN", 80, 70, "How to catch Heisenberg"),
+		new Student("Vercetti","Thomas",30,"Theft","Vice",98,80),
+		new Teacher("Diaz","Ricardo",50,"Weapon distribution",25),
 	};
 	std::cout << delimeter << std::endl;
 	for (int i = 0; i < sizeof(group[0]); i++)
 	{
 		group[i]->print();
 		std::cout << delimeter << std::endl;
+	}
+	for (int i = 0; i < sizeof(group[0]); i++)
+	{
+		delete[] group[i];
 	}
 }
 
