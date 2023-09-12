@@ -1,92 +1,87 @@
 #include <iostream>
-
-#define HUMAN_TAKE_PARAMETERS const std::string& first_name, const std::string& last_name, int age
-#define HUMAN_GIVE_PARAMETERS first_name, last_name, age
-
+#define delimeter "\n------------------------------------\n"
+#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, int age
+#define HUMAN_GIVE_PARAMETERS last_name, first_name, age
 class Human 
 {
-	std::string first_name;
 	std::string last_name;
+	std::string first_name;
 	int age;
-
 public:
+	const std::string& get_last_name()const 
+	{
+		return last_name;
+	}
 	const std::string& get_first_name()const 
 	{
 		return first_name;
 	}
-	const std::string& get_last_name()const
-	{
-		return last_name;
-	}
-	const int get_age()const
+	int get_age()const 
 	{
 		return age;
+	}
+	void set_last_name(const std::string& last_name) 
+	{
+		this->last_name = last_name;
 	}
 	void set_first_name(const std::string& first_name) 
 	{
 		this->first_name = first_name;
-	}
-	void set_last_name(const std::string& last_name)
-	{
-		this->last_name = last_name;
 	}
 	void set_age(int age)
 	{
 		this->age = age;
 	}
 
-			// Constructor
-
-	Human(HUMAN_TAKE_PARAMETERS)
+						//Constructor
+	Human(const std::string& last_name, const std::string& first_name, int age) 
 	{
-		set_first_name(first_name);
 		set_last_name(last_name);
+		set_first_name(first_name);
 		set_age(age);
 		std::cout << "HConstructor:\t" << this << std::endl;
 	}
-
 	~Human() 
 	{
 		std::cout << "HDestructor:\t" << this << std::endl;
 	}
-					//Methods
 
-	void print()const 
+				//Methods
+	virtual void print()const 
 	{
-		std::cout << last_name << " " << first_name << " " << age << std::endl;
-	} 
+		std::cout << last_name << " " << first_name << " " << age << " y/o\n";
+	}
 };
-
-class Student :public Human 
+#define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
+#define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
+class Student:public Human
 {
 	std::string speciality;
 	std::string group;
 	double rating;
 	double attendance;
-
 public:
-	const std::string& get_speciality() const 
+	const std::string& get_speciality()const 
 	{
 		return speciality;
 	}
-	const std::string& get_group() const
+	const std::string& get_group()const 
 	{
-		return speciality;
+		return group;
 	}
-	double get_rating()const
+	double get_rating()const 
 	{
 		return rating;
 	}
-	double get_attendance()const
+	double get_attendance()const 
 	{
 		return attendance;
 	}
-
-	void set_speciality(const std::string& speciality)
+	void set_speciality(const std::string& speciality) 
 	{
 		this->speciality = speciality;
 	}
-	void set_group(const std::string& group)
+	void set_group(const std::string& group) 
 	{
 		this->group = group;
 	}
@@ -94,16 +89,17 @@ public:
 	{
 		this->rating = rating;
 	}
-	void set_attendance(double attendance)
+	void set_attendance(double attendance) 
 	{
 		this->attendance = attendance;
 	}
-
-	// Constructor
-#define STUDENT_TAKE_PARAMETERS std::string& speciality, const std::string& group, double rating, double attendance
-#define STUDENT_GIVE_PARAMETERS speciality,group,rating,attendance
-	Student(
-		HUMAN_TAKE_PARAMETERS,STUDENT_TAKE_PARAMETERS):Human(HUMAN_GIVE_PARAMETERS)
+			
+		//Constructor
+	Student
+	(
+		HUMAN_TAKE_PARAMETERS,
+		STUDENT_TAKE_PARAMETERS
+	):Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
 		set_group(group);
@@ -111,57 +107,124 @@ public:
 		set_attendance(attendance);
 		std::cout << "SConstructor:\t" << this << std::endl;
 	}
+	~Student() 
+	{
+		std::cout << "SDestructor:\t" << this << std::endl;
+	}
+	//Methods
 	void print()const
 	{
 		Human::print();
 		std::cout << speciality << " " << group << " " << rating << " " << attendance << std::endl;
 	}
-
 };
-class Teacher :public Human 
+#define TEACHER_GIVE_PARAMETERS const std::string& speciality, int experience
+#define TEACHER_TAKE_PARAMETERS speciality,experience
+class Teacher:public Human
 {
 	std::string speciality;
 	int experience;
+	
 public:
-	const std::string& get_speciality()const 
+	const std::string& get_speciality()const
 	{
 		return speciality;
 	}
-	int get_experience()const 
+	int get_exprerience()const 
 	{
 		return experience;
 	}
-	void set_speciality(const std::string& speciality) 
+	void set_speciality(const std::string& speciality)
 	{
 		this->speciality = speciality;
 	}
-	void set_experience(int experience)
+	void set_experience(int experience) 
 	{
 		this->experience = experience;
 	}
 
-				//TConstuctor
-	Teacher(HUMAN_TAKE_PARAMETERS, const std::string& speciality, int experience) :Human(HUMAN_GIVE_PARAMETERS) 
+			//Constructor
+	Teacher
+	(HUMAN_TAKE_PARAMETERS,TEACHER_GIVE_PARAMETERS):Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
 		set_experience(experience);
+		std::cout << "TConstructor:\t" << this << std::endl;
+	}
+	~Teacher() 
+	{
+		std::cout << "TDestructor:\t" << this << std::endl;
 	}
 
+				// Methods
+	void print()const 
+	{
+		Human::print();
+		std::cout << speciality << " " << experience << " years\n";
+	}
 };
-class Graduate : public Student
+
+#define GRADUATE_TAKE_PARAMETERS  const std::string& subject
+#define GRADUATE_GIVE_PARAMETERS subject
+class Graduate :public Student
 {
 	std::string subject;
 public:
-	const:
-};
+	const std::string& get_subject()const
+	{
+		return subject;
+	}
+	void set_subject(const std::string& subject)
+	{
+		this->subject = subject;
+	}
 
-void main()
+	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, GRADUATE_TAKE_PARAMETERS)
+		:Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
+	{
+		set_subject(subject);
+		std::cout << "GConstructor:\t" << this << std::endl;
+	}
+	~Graduate()
+	{
+		std::cout << "GDestructor:\t" << this << std::endl;
+	}
+	void print()const
+	{
+		Student::print();
+		std::cout << subject << std::endl;
+	}
+};
+//#define INHERITANCE_CHECK
+void main() 
 {
 	setlocale(LC_ALL, "");
 
-	Human human("Montano", "Antonio", 35);
+#ifdef INHERITANCE_CHECK
+	Human human("Monatana", "Antonio", 25);
 	human.print();
 
 	Student student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 90, 95);
 	student.print();
+
+	Teacher teacher("White", "Walter", 50, "Chemistry", 20);
+	teacher.print();
+
+	Graduate graduate("Schrader", "Hank", 40, "Criminalistic", "OBN", 80, 70, "How to catch Heisenberg");
+	graduate.print();
+#endif // INHERITANCE_CHECK
+	
+	Human* group[] =
+	{
+		new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 90, 95),
+		new Teacher("White", "Walter", 50, "Chemistry", 20),
+		new Graduate("Schrader", "Hank", 40, "Criminalistic", "OBN", 80, 70, "How to catch Heisenberg")
+	};
+	std::cout << delimeter << std::endl;
+	for (int i = 0; i < sizeof(group[0]); i++)
+	{
+		group[i]->print();
+		std::cout << delimeter << std::endl;
+	}
 }
+
