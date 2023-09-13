@@ -124,6 +124,11 @@ public:
 		std::cout << speciality << " " << group << " " << rating << " " << attendance << std::endl;
 	}
 };
+std::ostream& operator<<(std::ostream& os, const Student& obj)
+{
+	return os << obj.get_speciality() << " " << obj.get_group() << " " << obj.get_rating() << " " << obj.get_attendance();
+}
+
 #define TEACHER_GIVE_PARAMETERS const std::string& speciality, int experience
 #define TEACHER_TAKE_PARAMETERS speciality,experience
 class Teacher:public Human
@@ -169,6 +174,10 @@ public:
 		std::cout << speciality << " " << experience << " years\n";
 	}
 };
+std::ostream& operator <<(std::ostream& os, const Teacher& obj) 
+{
+	return os /*<< (Human&)obj*/ << obj.get_speciality() << " " << obj.get_exprerience() << " лет.";
+}
 
 #define GRADUATE_TAKE_PARAMETERS  const std::string& subject
 #define GRADUATE_GIVE_PARAMETERS subject
@@ -195,12 +204,17 @@ public:
 	{
 		std::cout << "GDestructor:\t" << this << std::endl;
 	}
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Student::print();
-		std::cout << subject << std::endl;
+		return os << " " << subject << std::endl;
 	}
+	
 };
+std::ostream& operator <<(std::ostream& os, const Graduate& obj) 
+{
+	return os <<(Student&)obj<<" " << obj.get_subject();
+}
+
 void print(Human* group[], const int n);
 void save(Human* group[], const int n, const char sz_filename[]);
 
@@ -245,6 +259,10 @@ void print(Human* group[], const int n)
 	for (int i = 0; i < n; i++)
 	{
 		//group[i]->print();
+		std::cout << typeid(*group[i]).name() << std::endl;
+		if (typeid(*group[i]) == typeid(Student)) std::cout << *dynamic_cast<Student*>(group[i]) << std::endl;
+		if (typeid(*group[i]) == typeid(Teacher)) std::cout << *dynamic_cast<Teacher*>(group[i]) << std::endl;
+		if (typeid(*group[i]) == typeid(Graduate)) std::cout << *dynamic_cast<Graduate*>(group[i]) << std::endl;
 		std::cout << *group[i];
 		std::cout << delimeter << std::endl;
 	}
