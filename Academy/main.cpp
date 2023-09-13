@@ -48,14 +48,14 @@ public:
 	}
 
 				//Methods
-	virtual void print()const 
+	virtual std::ostream& print(std::ostream& os)const 
 	{
-		std::cout << last_name << " " << first_name << " " << age << " y/o\n";
+		return os << last_name << " " << first_name << " " << age << " y/o";
 	}
 };
 std::ostream& operator<<(std::ostream& os, const Human& obj) 
 {
-	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.";
+	return obj.print(os);
 }
 
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
@@ -118,10 +118,9 @@ public:
 		std::cout << "SDestructor:\t" << this << std::endl;
 	}
 	//Methods
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Human::print();
-		std::cout << speciality << " " << group << " " << rating << " " << attendance << std::endl;
+		return Human::print(os) << " " << speciality << " " << group << " " << rating << " " << attendance;
 	}
 };
 #define TEACHER_GIVE_PARAMETERS const std::string& speciality, int experience
@@ -163,10 +162,9 @@ public:
 	}
 
 				// Methods
-	void print()const 
+	std::ostream& print(std::ostream& os)const 
 	{
-		Human::print();
-		std::cout << speciality << " " << experience << " years\n";
+		return Human::print(os) << speciality << " " << experience << " years";
 	}
 };
 
@@ -195,10 +193,9 @@ public:
 	{
 		std::cout << "GDestructor:\t" << this << std::endl;
 	}
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Student::print();
-		std::cout << subject << std::endl;
+		return Student::print(os) <<" " << subject << std::endl;
 	}
 };
 void print(Human* group[], const int n);
@@ -237,6 +234,8 @@ void main()
 	{
 		delete group[i];
 	}
+	void save(Human * group[], const int n, const char sz_filename[]);
+	
 }
 
 void print(Human* group[], const int n)
@@ -251,8 +250,11 @@ void print(Human* group[], const int n)
 }
 void save(Human* group[], const int n, const char sz_filename[]) 
 {
-	std::ofstream fout(sz_filename);
-
+	std::ofstream fout(sz_filename);			//Создаём поток
+	fout.open(sz_filename);						//Открываем поток		
+	fout << print;								
 	fout.close();
+	
+	
 }
 
