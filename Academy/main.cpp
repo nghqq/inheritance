@@ -234,7 +234,7 @@ void main()
 	{
 		delete group[i];
 	}
-	void save(Human * group[], const int n, const char sz_filename[]);
+	save(group, sizeof(group, sizeof(group) / sizeof(group[0]));
 	
 }
 
@@ -252,8 +252,8 @@ void save(Human* group[], const int n, const char sz_filename[])
 {
 	std::ofstream fout(sz_filename);			//Создаём поток
 	fout.open(sz_filename);						//Открываем поток		
-	fout << print;								
-	fout.close();
+	fout << print;								//Пишем в поток
+	fout.close();								//Когда поток не нужен его нужно закрыть
 	
 	
 }
