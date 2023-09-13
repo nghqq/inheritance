@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #define delimeter "\n------------------------------------\n"
 #define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, int age
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
@@ -52,6 +53,11 @@ public:
 		std::cout << last_name << " " << first_name << " " << age << " y/o\n";
 	}
 };
+std::ostream& operator<<(std::ostream& os, const Human& obj) 
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.";
+}
+
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
 class Student:public Human
@@ -195,8 +201,11 @@ public:
 		std::cout << subject << std::endl;
 	}
 };
+void print(Human* group[], const int n);
+void save(Human* group[], const int n, const char sz_filename[]);
+
 //#define INHERITANCE_CHECK
-void main() 
+void main()
 {
 	setlocale(LC_ALL, "");
 
@@ -222,15 +231,28 @@ void main()
 		new Student("Vercetti","Thomas",30,"Theft","Vice",98,80),
 		new Teacher("Diaz","Ricardo",50,"Weapon distribution",25),
 	};
-	std::cout << delimeter << std::endl;
-	for (int i = 0; i < sizeof(group[0]); i++)
+	print(group, sizeof(group) / sizeof(group[0]));
+
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
-		group[i]->print();
+		delete group[i];
+	}
+}
+
+void print(Human* group[], const int n)
+{
+	std::cout << delimeter << std::endl;
+	for (int i = 0; i < n; i++)
+	{
+		//group[i]->print();
+		std::cout << *group[i];
 		std::cout << delimeter << std::endl;
 	}
-	for (int i = 0; i < sizeof(group[0]); i++)
-	{
-		delete[] group[i];
-	}
+}
+void save(Human* group[], const int n, const char sz_filename[]) 
+{
+	std::ofstream fout(sz_filename);
+
+	fout.close();
 }
 
