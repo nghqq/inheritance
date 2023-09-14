@@ -5,6 +5,9 @@
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
 class Human 
 {
+	static const int LAST_NAME_WIDTH = 15;
+	static const int FIRST_NAME_WIDTH = 15;
+	static const int AGE_WIDTH = 3;
 	std::string last_name;
 	std::string first_name;
 	int age;
@@ -50,18 +53,38 @@ public:
 				//Methods
 	virtual std::ostream& print(std::ostream& os)const 
 	{
-		return os << last_name << " " << first_name << " " << age << " y/o";
+		return os << last_name << " " << first_name << " " << age << " y/o ";
+	}
+	virtual std::ofstream& print(std::ofstream& ofs)const
+	{
+		ofs.width(LAST_NAME_WIDTH);
+		ofs << std::left;
+		ofs << last_name;
+		ofs.width(FIRST_NAME_WIDTH);
+		ofs << first_name; 
+		ofs.width(AGE_WIDTH);
+		ofs <<  age;
+		return ofs;
 	}
 };
-std::ostream& operator<<(std::ostream& os, const Human& obj) 
+std::ostream& operator<<(std::ostream& os, const Human& obj)
 {
 	return obj.print(os);
+}
+std::ofstream& operator <<(std::ofstream& ofc, const Human& obj)
+{
+	 obj.print(ofc);
+	 return ofc;
 }
 
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
 class Student:public Human
 {
+	static const int SPECIALITY_WIDTH = 25;
+	static const int GROUP_WIDTH = 8;
+	static const int RATING_WIDTH = 8;
+	static const int ATTENDANCE_WIDTH = 8;
 	std::string speciality;
 	std::string group;
 	double rating;
@@ -118,15 +141,30 @@ public:
 		std::cout << "SDestructor:\t" << this << std::endl;
 	}
 	//Methods
-	std::ostream& print(std::ostream& os)const
+	std::ostream& print(std::ostream& os)const override
 	{
 		return Human::print(os) << " " << speciality << " " << group << " " << rating << " " << attendance;
+	}
+	std::ofstream& print(std::ofstream& ofs)const override
+	{
+		Human::print(ofs);
+		ofs.width(SPECIALITY_WIDTH);
+		ofs<< speciality;
+		ofs.width(GROUP_WIDTH);
+		ofs<< group;
+		ofs.width(RATING_WIDTH);
+		ofs<< rating;
+		ofs.width(ATTENDANCE_WIDTH);
+		ofs<< attendance;
+		return ofs;
 	}
 };
 #define TEACHER_GIVE_PARAMETERS const std::string& speciality, int experience
 #define TEACHER_TAKE_PARAMETERS speciality,experience
 class Teacher:public Human
 {
+	static const int SPECIALITY_WIDTH = 8;
+	static const int EXPERIENCE_WIDTH = 8;
 	std::string speciality;
 	int experience;
 	
@@ -162,9 +200,18 @@ public:
 	}
 
 				// Methods
-	std::ostream& print(std::ostream& os)const 
+	std::ostream& print(std::ostream& os)const  override
 	{
 		return Human::print(os) << speciality << " " << experience << " years";
+	}
+	std::ofstream& print(std::ofstream& ofs)const  override
+	{
+		Human::print(ofs);
+		ofs.width(SPECIALITY_WIDTH);
+		ofs << speciality;
+		ofs.width(EXPERIENCE_WIDTH);
+		ofs<< experience;
+		return ofs;
 	}
 };
 
@@ -193,11 +240,17 @@ public:
 	{
 		std::cout << "GDestructor:\t" << this << std::endl;
 	}
-	std::ostream& print(std::ostream& os)const
+	std::ostream& print(std::ostream& os)const override
 	{
-		return Student::print(os) <<" " << subject << std::endl;
+		return Student::print(os) << " " << subject;
+	}
+	std::ofstream& print(std::ofstream& ofs)const override
+	{
+		 Student::print(ofs)<<" " << " " << subject;
+		 return ofs;
 	}
 };
+
 void print(Human* group[], const int n);
 void save(Human* group[], const int n, const char sz_filename[]);
 
@@ -229,12 +282,12 @@ void main()
 		new Teacher("Diaz","Ricardo",50,"Weapon distribution",25),
 	};
 	print(group, sizeof(group) / sizeof(group[0]));
+	save(group, sizeof(group) / sizeof(group[0]), "group.txt");
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];
 	}
-	save(group, sizeof(group, sizeof(group) / sizeof(group[0]));
 	
 }
 
@@ -251,10 +304,17 @@ void print(Human* group[], const int n)
 void save(Human* group[], const int n, const char sz_filename[]) 
 {
 	std::ofstream fout(sz_filename);			//Создаём поток
-	fout.open(sz_filename);						//Открываем поток		
-	fout << print;								//Пишем в поток
+	//fout.open(sz_filename);						//Открываем поток		
+	//fout << print;							//Пишем в поток
+	for (int i = 0; i < n; i++)
+	{	
+		fout << typeid(*group[i]).name() << "\t";
+		fout <<  *group[i]<<std::endl;
+	}
 	fout.close();								//Когда поток не нужен его нужно закрыть
-	
+	std::string command = "notepad ";
+	command += sz_filename;
+	system(command.c_str());
 	
 }
 
