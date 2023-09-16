@@ -241,6 +241,11 @@ public:
 		const int SIZE = SPECIALITY_WIDTH+1;
 		char sz_buffer[SIZE] = {};
 		ifs.read(sz_buffer, SPECIALITY_WIDTH);
+		for (int i = SPECIALITY_WIDTH-1; sz_buffer[i] != ' '; i--)
+		{
+			sz_buffer[i] = 0;
+		}
+		while (sz_buffer = ' ')for (int i = 0, sz_buffer[i]; i++)sz_buffer[i+1] - sz_buffer - 1;
 		this->speciality = sz_buffer;
 		ifs >> experience;
 		return ifs;
