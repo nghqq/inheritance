@@ -68,11 +68,11 @@ public:
 		ofs << age;
 		return ofs;
 	}
-virtual std::ifstream& scan(std::ifstream& ifs) 
-{
-	ifs >> last_name >> first_name >> age;
-	return ifs;
-}
+	virtual std::ifstream& scan(std::ifstream& ifs)
+	{
+		ifs >> last_name >> first_name >> age;
+		return ifs;
+	}
 };
 std::ostream& operator<<(std::ostream& os, const Human& obj)
 {
@@ -244,11 +244,11 @@ public:
 		char sz_buffer[SPECIALITY_WIDTH + 1] = {};
 		ifs.read(sz_buffer, SPECIALITY_WIDTH);
 		for (int i = SPECIALITY_WIDTH - 1; sz_buffer[i] == ' '; i--)sz_buffer[i] = 0;
-		while (sz_buffer[0] == ' ')for (int i = 0; sz_buffer[i]; i++)sz_buffer[i] = sz_buffer[i+1];
+		while (sz_buffer[0] == ' ')for (int i = 0; sz_buffer[i]; i++)sz_buffer[i] = sz_buffer[i + 1];
 		this->speciality = sz_buffer;
 		ifs >> experience;
 		return ifs;
-		
+
 	}
 };
 
@@ -286,7 +286,7 @@ public:
 		Student::print(ofs) << " " << subject;
 		return ofs;
 	}
-	std::ifstream& scan(std::ifstream& ifs)override 
+	std::ifstream& scan(std::ifstream& ifs)override
 	{
 		Student::scan(ifs);
 		std::getline(ifs, subject);
@@ -301,6 +301,7 @@ Human** load(const char sz_filename[], int& n);
 
 //#define INHERITANCE_CHECK
 //#define POLYMORPHISM_CHECK
+#define LOAD_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -320,26 +321,29 @@ void main()
 #endif // INHERITANCE_CHECK
 
 #ifdef POLYMORPHISM_CHECK
-	/*Human* group[] =
-{
-	new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 90, 95),
-	new Teacher("White", "Walter", 50, "Chemistry", 20),
-	new Graduate("Schrader", "Hank", 40, "Criminalistic", "OBN", 80, 70, "How to catch Heisenberg"),
-	new Student("Vercetti","Thomas",30,"Theft","Vice",98,80),
-	new Teacher("Diaz","Ricardo",50,"Weapon distribution",25),*/
-};
-print(group, sizeof(group) / sizeof(group[0]));
-save(group, sizeof(group) / sizeof(group[0]), "group.txt");
+	Human* group[] =
+	{
+		new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_220", 90, 95),
+		new Teacher("White", "Walter", 50, "Chemistry", 20),
+		new Graduate("Schrader", "Hank", 40, "Criminalistic", "OBN", 80, 70, "How to catch Heisenberg"),
+		new Student("Vercetti","Thomas",30,"Theft","Vice",98,80),
+		new Teacher("Diaz","Ricardo",50,"Weapon distribution",25),
+	};
+	print(group, sizeof(group) / sizeof(group[0]));
+	save(group, sizeof(group) / sizeof(group[0]), "group.txt");
 
-for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
-{
-	delete group[i];
-}
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
+	}
 #endif // POLYMORPHISM_CHECK
 
+#ifdef LOAD_CHECK
 	int n = 0;
-	Human** group = load("group.txt",n);
+	Human** group = load("group.txt", n);
 	print(group, n);
+#endif // LOAD_CHECK
+
 
 }
 
@@ -373,6 +377,7 @@ Human* human_factory(const std::string& type)
 	if (type.find("Student") != std::string::npos)	return new Student("", "", 0, "", "", 0, 0);
 	if (type.find("Graduate") != std::string::npos)	return new Graduate("", "", 0, "", "", 0, 0, "");
 	if (type.find("Teacher") != std::string::npos)	return new Teacher("", "", 0, "", 0);
+	return nullptr;
 }
 Human** load(const char sz_filename[], int& n)
 {
@@ -388,7 +393,7 @@ Human** load(const char sz_filename[], int& n)
 			if (buffer.empty())continue;
 			n++;
 		}
-		group = new Human* [n] {};
+		group = new Human * [n] {};
 		std::cout << "Position:\t" << fin.tellg() << std::endl;
 		fin.clear();
 		fin.seekg(0);
@@ -400,7 +405,7 @@ Human** load(const char sz_filename[], int& n)
 			std::getline(fin, buffer, ':');
 			group[i] = human_factory(buffer);
 			if (group[i])fin >> *group[i];
-			// fin>> *group[i];
+			//fin >> *group[i];
 
 		}
 
