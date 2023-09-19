@@ -39,7 +39,7 @@ public:
 	}
 
 	//Constructor
-	Human(const std::string& last_name, const std::string& first_name, int age)
+	Human(HUMAN_TAKE_PARAMETERS)
 	{
 		set_last_name(last_name);
 		set_first_name(first_name);
@@ -78,10 +78,10 @@ std::ostream& operator<<(std::ostream& os, const Human& obj)
 {
 	return obj.print(os);
 }
-std::ofstream& operator <<(std::ofstream& ofc, const Human& obj)
+std::ofstream& operator <<(std::ofstream& ofs, const Human& obj)
 {
-	obj.print(ofc);
-	return ofc;
+	obj.print(ofs);
+	return ofs;
 }
 std::ifstream& operator >>(std::ifstream& ifs, Human& obj)
 {
@@ -184,12 +184,12 @@ public:
 		return ifs;
 	}
 };
-#define TEACHER_GIVE_PARAMETERS const std::string& speciality, int experience
-#define TEACHER_TAKE_PARAMETERS speciality,experience
+#define TEACHER_TAKE_PARAMETERS const std::string& speciality, int experience
+#define TEACHER_GIVE_PARAMETERS speciality,experience
 class Teacher :public Human
 {
-	static const int SPECIALITY_WIDTH = 8;
-	static const int EXPERIENCE_WIDTH = 8;
+	static const int SPECIALITY_WIDTH = 25;
+	static const int EXPERIENCE_WIDTH = 3;
 	std::string speciality;
 	int experience;
 
@@ -198,7 +198,7 @@ public:
 	{
 		return speciality;
 	}
-	int get_exprerience()const
+	int get_experience()const
 	{
 		return experience;
 	}
@@ -213,7 +213,7 @@ public:
 
 	//Constructor
 	Teacher
-	(HUMAN_TAKE_PARAMETERS, TEACHER_GIVE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
+	(HUMAN_TAKE_PARAMETERS, TEACHER_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_speciality(speciality);
 		set_experience(experience);
@@ -360,7 +360,7 @@ void save(Human* group[], const int n, const char sz_filename[])
 	//fout << print;							//Пишем в поток
 	for (int i = 0; i < n; i++)
 	{
-		fout << typeid(*group[i]).name() << "\t";
+		fout << typeid(*group[i]).name() << ":\t";
 		fout << *group[i] << std::endl;
 	}
 	fout.close();								//Когда поток не нужен его нужно закрыть
@@ -368,6 +368,12 @@ void save(Human* group[], const int n, const char sz_filename[])
 	command += sz_filename;
 	system(command.c_str());
 
+}
+Human* human_factory(const std::string& type)
+{
+	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0);
+	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0);
+	if (type.find("Graduate") != std::string::npos)return new Graduate("", "", 0, "", "", 0, 0, "");
 }
 Human** load(const char sz_filename[], int& n)
 {
@@ -383,7 +389,7 @@ Human** load(const char sz_filename[], int& n)
 			if (buffer.empty())continue;
 			n++;
 		}
-		group = new Human * [n] {};
+		group = new Human* [n] {};
 		std::cout << "Position:\t" << fin.tellg() << std::endl;
 		fin.clear();
 		fin.seekg(0);
@@ -404,15 +410,9 @@ Human** load(const char sz_filename[], int& n)
 
 	else
 	{
-		std::cerr << "Error: File not fount" << std::endl;
+		std::cerr << "Error: File not found" << std::endl;
 	}
 	return group;
 }
 
-Human* human_factory(const std::string& type) 
-{
-	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0);
-	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0);
-	if (type.find("Graduate") != std::string::npos)return new Graduate("", "", 0, "","", 0,0,"");
-}
 
