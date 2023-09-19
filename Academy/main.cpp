@@ -355,15 +355,14 @@ void print(Human* group[], const int n)
 }
 void save(Human* group[], const int n, const char sz_filename[])
 {
-	std::ofstream fout(sz_filename);			//Создаём поток
-	//fout.open(sz_filename);						//Открываем поток		
-	//fout << print;							//Пишем в поток
+	std::ofstream fout(sz_filename);
 	for (int i = 0; i < n; i++)
 	{
+		//group[i]->print();
 		fout << typeid(*group[i]).name() << ":\t";
 		fout << *group[i] << std::endl;
 	}
-	fout.close();								//Когда поток не нужен его нужно закрыть
+	fout.close();
 	std::string command = "notepad ";
 	command += sz_filename;
 	system(command.c_str());
@@ -371,9 +370,9 @@ void save(Human* group[], const int n, const char sz_filename[])
 }
 Human* human_factory(const std::string& type)
 {
-	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0);
-	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0);
-	if (type.find("Graduate") != std::string::npos)return new Graduate("", "", 0, "", "", 0, 0, "");
+	if (type.find("Student") != std::string::npos)	return new Student("", "", 0, "", "", 0, 0);
+	if (type.find("Graduate") != std::string::npos)	return new Graduate("", "", 0, "", "", 0, 0, "");
+	if (type.find("Teacher") != std::string::npos)	return new Teacher("", "", 0, "", 0);
 }
 Human** load(const char sz_filename[], int& n)
 {
