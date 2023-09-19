@@ -62,6 +62,7 @@ public:
 		ofs << std::left;
 		ofs << last_name;
 		ofs.width(FIRST_NAME_WIDTH);
+		ofs << std::left;
 		ofs << first_name;
 		ofs.width(AGE_WIDTH);
 		ofs << age;
@@ -171,9 +172,11 @@ public:
 	std::ifstream& scan(std::ifstream& ifs)override
 	{
 		Human::scan(ifs);
-		const int SIZE = 256;
-		char sz_buffer[SIZE] = {};
+		char sz_buffer[SPECIALITY_WIDTH + 1] = {};
 		ifs.read(sz_buffer, SPECIALITY_WIDTH);
+		for (int i = SPECIALITY_WIDTH - 1; sz_buffer[i] == ' '; i--)sz_buffer[i] = 0;
+		while (sz_buffer[0] == ' ')
+			for (int i = 0; sz_buffer[i]; i++)sz_buffer[i] = sz_buffer[i + 1];
 		this->speciality = sz_buffer;
 		ifs >> group;
 		ifs >> rating;
@@ -238,17 +241,14 @@ public:
 	std::ifstream& scan(std::ifstream& ifs)override
 	{
 		Human::scan(ifs);
-		const int SIZE = SPECIALITY_WIDTH+1;
-		char sz_buffer[SIZE] = {};
+		char sz_buffer[SPECIALITY_WIDTH + 1] = {};
 		ifs.read(sz_buffer, SPECIALITY_WIDTH);
-		for (int i = SPECIALITY_WIDTH-1; sz_buffer[i] != ' '; i--)
-		{
-			sz_buffer[i] = 0;
-		}
-		while (sz_buffer = ' ')for (int i = 0, sz_buffer[i]; i++)sz_buffer[i+1] - sz_buffer - 1;
+		for (int i = SPECIALITY_WIDTH - 1; sz_buffer[i] == ' '; i--)sz_buffer[i] = 0;
+		while (sz_buffer[0] == ' ')for (int i = 0; sz_buffer[i]; i++)sz_buffer[i] = sz_buffer[i+1];
 		this->speciality = sz_buffer;
 		ifs >> experience;
 		return ifs;
+		
 	}
 };
 
@@ -283,7 +283,7 @@ public:
 	}
 	std::ofstream& print(std::ofstream& ofs)const override
 	{
-		Student::print(ofs) << " " << " " << subject;
+		Student::print(ofs) << " " << subject;
 		return ofs;
 	}
 	std::ifstream& scan(std::ifstream& ifs)override 
@@ -349,7 +349,7 @@ void print(Human* group[], const int n)
 	for (int i = 0; i < n; i++)
 	{
 		//group[i]->print();
-		std::cout << *group[i];
+		std::cout << *group[i] << std::endl;
 		std::cout << delimeter << std::endl;
 	}
 }
