@@ -188,7 +188,8 @@ public:
 	{
 		return (side_a + side_b) * 2;
 	}
-	void draw()const override 
+
+	void draw()const override
 	{
 		HWND hwnd = GetConsoleWindow();
 		HDC hdc = GetDC(hwnd);
@@ -197,7 +198,7 @@ public:
 		HBRUSH hBrush = CreateSolidBrush(color);
 
 
-		SelectObject(hdc, hPen); 
+		SelectObject(hdc, hPen);
 		SelectObject(hdc, hBrush);
 
 		::Rectangle(hdc, start_x, start_y, start_x + side_a, start_y + side_b);
@@ -207,6 +208,7 @@ public:
 
 		ReleaseDC(hwnd, hdc);
 	}
+	
 
 	Rectangle(RECTANGLE_TAKE_PARAMETERS, SHAPE_TAKE_PARAMETERS): Shape (SHAPE_GIVE_PARAMETERS)
 	{
@@ -229,10 +231,86 @@ public:
 		std::cout << std::endl;
 
 	}
+
+	
 };
 
 class Circle :public Shape 
 {
+	
+	double radius;
+
+public:
+	
+	double get_radius()const
+	{
+		return radius;
+	}
+	void set_radius(double radius)
+	{
+		this->radius = radius;
+	}
+
+	//Constructors
+	
+	Circle(double radius, SHAPE_TAKE_PARAMETERS) :Shape(SHAPE_GIVE_PARAMETERS) 
+	{
+		set_color(color);
+		set_start_x(start_x);
+		set_start_y(start_y);
+		set_radius(radius);
+	}
+
+	//Destructor
+	~Circle(){}
+
+	//Methods
+
+	void info()const
+	{
+		std::cout << "Диаметер окружности : " << radius*2 << std::endl;
+		std::cout << "Радиус окружности: " << get_radius() << std::endl;
+		std::cout << "Длина окружности: " << get_perimeter() << std::endl;
+		std::cout << "Площадь окружности: " << get_area() << std::endl;
+		std::cout << std::endl;
+
+	}
+	double diameter(double radius) 
+	{
+		return radius * 2;
+	}
+
+			//Clear Virtual Methods
+		//Clear Virtual Methods			
+
+	double get_area()const override
+	{
+		return 3.14 * (radius * radius);
+	}
+	double get_perimeter()const override
+	{
+		return sqrt((get_area() * 4) * 3.14);
+	}
+	void draw()const override
+	{
+		HWND hwnd = GetConsoleWindow();
+		HDC hdc = GetDC(hwnd);
+
+		HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+		HBRUSH hBrush = CreateSolidBrush(color);
+
+
+		SelectObject(hdc, hPen);
+		SelectObject(hdc, hBrush);
+
+		Ellipse(hdc, start_x, start_y, start_x + radius, start_y + radius);
+
+		DeleteObject(hPen);
+		DeleteObject(hBrush);
+
+		ReleaseDC(hwnd, hdc);
+	}
+
 
 };
 
@@ -240,7 +318,7 @@ void main()
 {
 	setlocale(LC_ALL, "");
 
-	Square square(150,Color::red,200,200,5);
+	Square square(250,Color::red,100,300,5);
 	//std::cout << "Длинна стороны: " << square.get_side() << std::endl;
 	//std::cout << "Периметр: " << square.get_perimeter() << std::endl;
 	//std::cout << "Площадь: " << square.get_area() << std::endl;
@@ -248,12 +326,16 @@ void main()
 	square.info();
 	square.draw();
 	
-	class Rectangle rect(250, 150, Color::blue, 500, 200, 5);  //x  , y Размер, цвет, расположение на экране
+	class Rectangle rect(250, 350, Color::blue, 500, 300, 5);  //x  , y Размер, цвет, расположение на экране
 	//std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
 	//std::cout << "Сторона b: " << rect.get_side_b() << std::endl;
 	//std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
 	//std::cout << "Площадь: " << rect.get_area() << std::endl;
 	rect.info();
 	rect.draw();
+
+	Circle circle(250, Color::white, 800, 300, 5);
+	circle.info();
+	circle.draw();
 
 }
