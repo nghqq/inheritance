@@ -142,6 +142,7 @@ public:
 
 		// Констекст устройства и все инструменты занимают ресурсы, а ресурсы нужно освобождать.
 	}
+	
 };
 
 #define RECTANGLE_TAKE_PARAMETERS double side_a, double side_b
