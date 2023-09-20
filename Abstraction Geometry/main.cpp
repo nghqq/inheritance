@@ -80,7 +80,6 @@ public:
 	~Shape(){}
 			//Methods
 
-	virtual void info()
 };
 class Square : public Shape 
 {
@@ -103,6 +102,11 @@ public:
 	}
 	~Square(){}
 
+				//Methods
+	void Square::info()const
+	{
+		std::cout << side << perimeter << area;
+	}
 
 		//Clear Virtual Methods			
 
