@@ -3,12 +3,31 @@
 
 enum Color
 {
-	red = 0x000000FF,
-	green = 0x0000FF00,
-	blue = 0x00FF0000,
-	yellow = 0x0000FFFF,
-	purple = 0x00FF00FF,
-	white = 0x00FFFFFF
+	red		=	0x000000FF,
+	green	=	0x0000FF00,
+	blue	=	0x00FF0000,
+	yellow	=	0x0000FFFF,
+	purple	=	0x00FF00FF,
+	white	=	0x00FFFFFF
+};
+#define SHAPE_TAKE_PARAMETERS Color color, int start_x, int start_y, int line_width
+#define SHAPE_GIVE_PARAMETERS  color,  start_x, start_y,  line_width
+class Shape 
+{
+	static const int MIN_START_X = 10;
+	static const int MAX_START_X = 800;
+
+	static const int MIN_START_Y = 10;
+	static const int MAX_START_Y = 500;
+
+	static const int MIN_LINE_WIDTH = 1;
+	static const int MAX_LINE_WIDTH = 30;
+protected:
+	Color color;
+	int start_x;
+	int start_y;
+	int line_width;
+
 public:
 	Color get_color()const 
 	{
@@ -22,7 +41,7 @@ public:
 	{
 		return start_y;
 	}
-	int get_line_width()const
+	int get_line_widt()const 
 	{
 		return line_width;
 	}
@@ -30,107 +49,178 @@ public:
 	{
 		this->color = color;
 	}
-	void set_start_x(double start_x)
+	void set_start_x(int start_x) 
 	{
-
+		if (start_x < MIN_START_X)start_x = MIN_START_X;
+		if (start_x > MAX_START_X)start_x = MAX_START_X;
+		this->start_x = start_x;
 	}
-};
-
-
-class Shape 
-{
-	static const int MIN_START_X = 10;
-	static const int MAX_START_X = 800;
-	static const int MIN_LINE_WIDTH = 1;
-	static const int MAX_LINE_WIDTH = 30;
-
-	Color color;
-	int start_x;
-	int start_y;
-	int line_width;
-
-public:
+	void set_start_y(int start_y)
+	{
+		if (start_y < MIN_START_X)start_y = MIN_START_Y;
+		if (start_y > MAX_START_X)start_y = MAX_START_Y;
+		this->start_y = start_y;
+	}
+	void set_line_width(int line_width) 
+	{
+		if (line_width < MIN_LINE_WIDTH)line_width = MIN_LINE_WIDTH;
+		if (line_width > MAX_LINE_WIDTH)line_width = MAX_LINE_WIDTH;
+		this->line_width = line_width;
+	}
 	virtual double get_area() const = 0;
 	virtual double get_perimeter()const = 0;
-	virtual void drow()const = 0;
-
+	virtual void draw()const = 0;
+			//Constuctors
+	Shape(SHAPE_TAKE_PARAMETERS) :color(color) 
+	{
+		set_start_x(start_x);
+		set_start_y(start_y);
+		set_line_width(line_width);
+	}
+	~Shape(){}
 };
-
 class Square : public Shape 
 {
 	double side;
+
 public:
 	double get_side()const 
 	{
 		return side;
 	}
- void set_side(double side)
+	void set_side(double side)
 	{
 		this->side = side;
 	}
-  Square(double side)
-{
-	set_side(side);
-}
-~Square() {}
+		//Constructors
 
-double get_area()const override
-{
-	return side * side;
-}
-double get_perimeter()const override 
-{
-	return side * 4;
-}
-
-void drow()const override
-{
-	
-	/*for (int i = 0; i < side; i++)
+	Square(double side, SHAPE_TAKE_PARAMETERS):Shape(SHAPE_GIVE_PARAMETERS)
 	{
-		for (int i = 0; i < side; i++) 
+		set_side(side);
+	}
+	~Square(){}
+
+
+		//Clear Virtual Methods			
+
+	double get_area()const override 
+	{
+		return side * side;
+	}
+	double get_perimeter()const override 
+	{
+		return side * 4;
+	}
+	void draw()const override 
+	{
+		/*for (int i = 0; i < side; i++)
 		{
-			std::cout << "* ";
-		}
-		std::cout << std::endl;
-	}*/
-	// 1) Получаем окно консоли
-	HWND hwnd = GetConsoleWindow();				// 1) Получаем окно консоли
-	HDC hdc = GetDC(hwnd);						// 2) Получаем контекст устройства для  окна консоли 
+			for (int j = 0; j < side; j++) 
+			{
+				std::cout << "* ";
+			}
+			std::cout << std::endl;
+		}*/
+		HWND hwnd = GetConsoleWindow(); // 1) Получаем окно консоли 
+		HDC hdc = GetDC(hwnd);			// 2) Получаем контекст устройства для окна консоли
 
-	HPEN hPen = CreatePen(PS_SOLID, 5, RGB(255, 255, 255));		// 3) Создаем карандаш, который рисует контур фигуры 
-	HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));		// 4) Создаём кисть, которая делает заливку фигуры
+		HPEN hPen = CreatePen(PS_SOLID, line_width, color);   //3) Создаем карандаш, который рисует контур фигуры
+		HBRUSH hBrush = CreateSolidBrush(color);	  //4) Создаем кисть, которая рисует заливку фигуры
+		//5) Выбираем, чем и на чём рисовать. Рисуют всегда на контексте устройства для рисования используем карандаш и кисть 
+		SelectObject(hdc, hPen);
+		SelectObject(hdc, hBrush);
 
-	//5) Выбираем чем и на чём рисовать. Рисуют всегда на контексте устройства, для рисования используем карандаш и кисть
-	SelectObject(hdc, hPen);
-	SelectObject(hdc, hBrush);
-	// 6) Рисуем прямоугольник. Для его рисования нужно указать коррдинаты верхнего-левого и правого-нижнего угла
-	Rectangle(hdc, 100, 100, 200, 200);
-	// 7) Удаляем все созданные инструменты: 
-	DeleteObject(hBrush);
-	DeleteObject(hPen);
+		//6) Рисуем прямоугольник. Для его рисования нужно указать его координаты верхнего-левого угла и правого-нижнего угла
+		Rectangle(hdc, start_x, start_y, start_x+side, start_y+side);
 
-	// 8) Освобождаем контекстное устройство 
-	ReleaseDC(hwnd, hdc);
-}
+		 //7) Удаляем все созданные инструменты: 
+		DeleteObject(hBrush);
+		DeleteObject(hPen);
 
+		//8) Осовобождаем контекст устройства 
+		ReleaseDC(hwnd, hdc);
+
+		// Констекст устройства и все инструменты занимают ресурсы, а ресурсы нужно освобождать.
+	}
 };
 
+#define RECTANGLE_TAKE_PARAMETERS double side_a, double side_b
+#define RECTANGLE_GIVE_PARAMETERS  side_a,  side_b
+class Rectangle :public Shape 
+{
+	double side_a;
+	double side_b;
+public:
+	double get_side_a()const 
+	{
+		return side_a;
+	}
+	double get_side_b()const
+	{
+		return side_b;
+	}
+	void set_side_a(double side_a) 
+	{
+		this->side_a = side_a;
+	}
+	void set_side_b(double side_b)
+	{
+		this->side_b = side_b;
+	}
+	double get_area()const override 
+	{
+		return side_a * side_b;
+	}
+	double get_perimeter()const override 
+	{
+		return (side_a + side_b) * 2;
+	}
+	void draw()const override 
+	{
+		HWND hwnd = GetConsoleWindow();
+		HDC hdc = GetDC(hwnd);
+
+		HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+		HBRUSH hBrush = CreateSolidBrush(color);
 
 
+		SelectObject(hdc, hPen); 
+		SelectObject(hdc, hBrush);
 
+		::Rectangle(hdc, start_x, start_y, start_x + side_a, start_y + side_b);
 
+		DeleteObject(hPen);
+		DeleteObject(hBrush);
+
+		ReleaseDC(hwnd, hdc);
+	}
+
+	Rectangle(RECTANGLE_TAKE_PARAMETERS, SHAPE_TAKE_PARAMETERS): Shape (SHAPE_GIVE_PARAMETERS)
+	{
+		set_color(color);
+		set_start_x(start_x);
+		set_start_y(start_y);
+		set_side_a(side_a);
+		set_side_b(side_b);
+	}
+	~Rectangle(){}
+};
 
 void main() 
 {
 	setlocale(LC_ALL, "");
 
-	Square square(5);
-	std::cout << "Длина стороны " << square.get_side() << std::endl;
-	std::cout << "Ширина стороны " << square.get_side() << std::endl;
-	std::cout << "Площадь " << square.get_area() << std::endl;
-	std::cout << "Периметр " << square.get_perimeter() << std::endl;
-	square.drow();
+	Square square(150,Color::red,200,200,5);
+	std::cout << "Длинна стороны: " << square.get_side() << std::endl;
+	std::cout << "Периметр: " << square.get_perimeter() << std::endl;
+	std::cout << "Площадь: " << square.get_area() << std::endl;
+	std::cout << std::endl;
+	square.draw();
 	
-
+	class Rectangle rect(250, 150, Color::blue, 200, 500, 5);
+	std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
+	std::cout << "Сторона b: " << rect.get_side_b() << std::endl;
+	std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
+	std::cout << "Площадь: " << rect.get_area() << std::endl;
+	rect.draw();
 }
