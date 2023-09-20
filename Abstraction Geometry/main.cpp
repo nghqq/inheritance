@@ -103,9 +103,13 @@ public:
 	~Square(){}
 
 				//Methods
-	void Square::info()const
+	void info()const
 	{
-		std::cout << side << perimeter << area;
+		std::cout << "Сторона квадрата: " << side << std::endl;
+		std::cout << "Периметр квадрата: " << get_perimeter() << std::endl;
+		std::cout << "Площадь квадрата: " << get_area() << std::endl;
+		std::cout << std::endl;
+
 	}
 
 		//Clear Virtual Methods			
@@ -212,6 +216,18 @@ public:
 		set_side_b(side_b);
 	} 
 	~Rectangle(){}
+
+						//Methods
+
+	void info()const
+	{
+		std::cout << "Сторона прямоугольника a: " << get_side_a() << std::endl;
+		std::cout << "Сторона прямоугольника b: " << get_side_b() << std::endl;
+		std::cout << "Периметр прямоугольника: " << get_perimeter() << std::endl;
+		std::cout << "Площадь прямоугольника: " << get_area() << std::endl;
+		std::cout << std::endl;
+
+	}
 };
 
 void main() 
@@ -219,16 +235,19 @@ void main()
 	setlocale(LC_ALL, "");
 
 	Square square(150,Color::red,200,200,5);
-	std::cout << "Длинна стороны: " << square.get_side() << std::endl;
-	std::cout << "Периметр: " << square.get_perimeter() << std::endl;
-	std::cout << "Площадь: " << square.get_area() << std::endl;
-	std::cout << std::endl;
+	//std::cout << "Длинна стороны: " << square.get_side() << std::endl;
+	//std::cout << "Периметр: " << square.get_perimeter() << std::endl;
+	//std::cout << "Площадь: " << square.get_area() << std::endl;
+	//std::cout << std::endl;
+	square.info();
 	square.draw();
 	
 	class Rectangle rect(250, 150, Color::blue, 200, 500, 5);
-	std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
-	std::cout << "Сторона b: " << rect.get_side_b() << std::endl;
-	std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
-	std::cout << "Площадь: " << rect.get_area() << std::endl;
+	//std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
+	//std::cout << "Сторона b: " << rect.get_side_b() << std::endl;
+	//std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
+	//std::cout << "Площадь: " << rect.get_area() << std::endl;
+	rect.info();
 	rect.draw();
+
 }
