@@ -78,6 +78,9 @@ public:
 		set_line_width(line_width);
 	}
 	~Shape(){}
+			//Methods
+
+	virtual void info()
 };
 class Square : public Shape 
 {
