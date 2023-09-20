@@ -203,7 +203,7 @@ public:
 		set_start_y(start_y);
 		set_side_a(side_a);
 		set_side_b(side_b);
-	}
+	} 
 	~Rectangle(){}
 };
 
