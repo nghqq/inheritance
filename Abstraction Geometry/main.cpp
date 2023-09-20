@@ -1,6 +1,7 @@
 #include<iostream>
 #include<Windows.h>
 
+			//enum  (Enumeration - Перечисление) это набор нумерованных целочисленных констант
 enum Color
 {
 	red		=	0x000000FF,
@@ -230,6 +231,11 @@ public:
 	}
 };
 
+class Circle :public Shape 
+{
+
+};
+
 void main() 
 {
 	setlocale(LC_ALL, "");
@@ -242,7 +248,7 @@ void main()
 	square.info();
 	square.draw();
 	
-	class Rectangle rect(250, 150, Color::blue, 200, 500, 5);
+	class Rectangle rect(250, 150, Color::blue, 500, 200, 5);  //x  , y Размер, цвет, расположение на экране
 	//std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
 	//std::cout << "Сторона b: " << rect.get_side_b() << std::endl;
 	//std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
