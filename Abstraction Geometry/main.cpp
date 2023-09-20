@@ -280,8 +280,7 @@ public:
 		return radius * 2;
 	}
 
-			//Clear Virtual Methods
-		//Clear Virtual Methods			
+			//Clear Virtual Methods		
 
 	double get_area()const override
 	{
