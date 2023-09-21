@@ -352,11 +352,90 @@ public:
 	~Square(){}
 };
 
+class Triangle :public Shape
+{
+public:
+	virtual double get_height() const = 0;
+	Triangle(SHAPE_TAKE_PARAMETERS):Shape(SHAPE_GIVE_PARAMETERS){}
+	~Triangle(){}
+	
+	void info()const 
+	{
+		std::cout << "Высота треугольника: " << get_height() << std::endl;
+		Shape::info();
+	}
+};
+class EquilateralTriangle: public Triangle 
+{
+	double side;
+
+public:
+	double get_side()const 
+	{
+		return side;
+	}
+	void set_side(double side) 
+	{
+		if (side < MIN_DEMENSION)side = MIN_DEMENSION;
+		if (side > MAX_DEMENSION)side = MAX_DEMENSION;
+		this->side = side;
+	}
+	double get_height() const override
+	{
+		return sqrt(pow(side, 2) - pow(side / 2, 2));
+	}
+	double get_area()const override 
+	{
+		return pow(get_height(), 2) * sqrt(3);
+	}
+	double get_perimeter()const override 
+	{
+		return side * 3;
+	}
+	void draw() const override 
+	{
+		HWND hwnd = GetConsoleWindow();
+		HDC hdc = GetDC(hwnd);
+
+		HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+		HBRUSH hBrush = CreateSolidBrush(color);
+
+
+		SelectObject(hdc, hPen);
+		SelectObject(hdc, hBrush);
+
+		POINT vertex[] =
+		{
+			{start_x,start_y + side},
+			{start_x + side,start_y + side},
+			{start_x + side / 2,start_y+side-get_height()}
+		};
+		::Polygon(hdc, vertex, 3);
+
+		DeleteObject(hPen);
+		DeleteObject(hBrush);
+
+		ReleaseDC(hwnd, hdc);
+	}
+	EquilateralTriangle(double side, SHAPE_TAKE_PARAMETERS) :Triangle(SHAPE_GIVE_PARAMETERS)
+	{
+		set_side(side);
+	}
+	~EquilateralTriangle(){}
+
+	void info()const 
+	{
+		std::cout << typeid(*this).name() << std::endl;
+		std::cout << "Длина стороны: " << side << std::endl;
+		Triangle::info();
+	}
+};
+
 void main() 
 {
 	setlocale(LC_ALL, "");
 
-	Square square(150,Color::red,100,700,5);
+	Square square(150,Color::red,300,10,5);
 	//std::cout << "Длинна стороны: " << square.get_side() << std::endl;
 	//std::cout << "Периметр: " << square.get_perimeter() << std::endl;
 	//std::cout << "Площадь: " << square.get_area() << std::endl;
@@ -366,7 +445,7 @@ void main()
 	
 	
 	
-	class Rectangle rect(150, 200, Color::blue, 500, 700, 5);  //x  , y Размер, цвет, расположение на экране
+	class Rectangle rect(150, 200, Color::blue, 700, 10, 5);  //x  , y Размер, цвет, расположение на экране
 	//std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
 	//std::cout << "Сторона b: " << rect.get_side_b() << std::endl;
 	//std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
@@ -376,10 +455,13 @@ void main()
 	
 	
 
-	Circle circle(75, Color::white, 300, 700, 5);
+	Circle circle(75, Color::white, 300, 170, 5);
 	circle.info();
 	std::cout << delimiter << std::endl;
 	
+	EquilateralTriangle et(150, Color::green, 500, 170, 15);
+	et.info();
+	std::cout << delimiter << std::endl;
 	
 
 }
