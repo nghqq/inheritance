@@ -81,6 +81,15 @@ public:
 	~Shape(){}
 			//Methods
 
+	void info()const
+	{
+		
+		std::cout << "Периметр фигуры: " << get_perimeter() << std::endl;
+		std::cout << "Площадь фигуры: " << get_area() << std::endl;
+		draw();
+
+	}
+
 };
 class Square : public Shape 
 {
@@ -106,11 +115,10 @@ public:
 				//Methods
 	void info()const
 	{
-		std::cout << "Сторона квадрата: " << side << std::endl;
-		std::cout << "Периметр квадрата: " << get_perimeter() << std::endl;
-		std::cout << "Площадь квадрата: " << get_area() << std::endl;
+		std::cout << "Длина стороны:" << get_side() << std::endl;
+		Shape::info();
+		std::cout << typeid(*this).name() << std::endl;
 		std::cout << std::endl;
-
 	}
 
 		//Clear Virtual Methods			
@@ -155,6 +163,8 @@ public:
 		// Констекст устройства и все инструменты занимают ресурсы, а ресурсы нужно освобождать.
 	}
 	
+	
+
 };
 
 #define RECTANGLE_TAKE_PARAMETERS double side_a, double side_b
@@ -224,15 +234,13 @@ public:
 
 	void info()const
 	{
-		std::cout << "Сторона прямоугольника a: " << get_side_a() << std::endl;
-		std::cout << "Сторона прямоугольника b: " << get_side_b() << std::endl;
-		std::cout << "Периметр прямоугольника: " << get_perimeter() << std::endl;
-		std::cout << "Площадь прямоугольника: " << get_area() << std::endl;
+		std::cout << "Сторона a: " << get_side_a() << std::endl;
+		std::cout << "Сторона b: " << get_side_b() << std::endl;
+		Shape::info();
+		std::cout << typeid(*this).name() << std::endl;
 		std::cout << std::endl;
-
 	}
 
-	
 };
 
 class Circle :public Shape 
@@ -268,14 +276,13 @@ public:
 
 	void info()const
 	{
-		std::cout << "Диаметер окружности : " << radius*2 << std::endl;
+		std::cout << "Диаметер окружности : " << get_diameter() << std::endl;
 		std::cout << "Радиус окружности: " << get_radius() << std::endl;
-		std::cout << "Длина окружности: " << get_perimeter() << std::endl;
-		std::cout << "Площадь окружности: " << get_area() << std::endl;
+		std::cout << typeid(*this).name() << std::endl;
 		std::cout << std::endl;
 
 	}
-	double diameter(double radius) 
+	double get_diameter()const
 	{
 		return radius * 2;
 	}
@@ -323,7 +330,7 @@ void main()
 	//std::cout << "Площадь: " << square.get_area() << std::endl;
 	//std::cout << std::endl;
 	square.info();
-	square.draw();
+	
 	
 	class Rectangle rect(250, 350, Color::blue, 500, 300, 5);  //x  , y Размер, цвет, расположение на экране
 	//std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
@@ -331,10 +338,10 @@ void main()
 	//std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
 	//std::cout << "Площадь: " << rect.get_area() << std::endl;
 	rect.info();
-	rect.draw();
+	
 
 	Circle circle(250, Color::white, 800, 300, 5);
 	circle.info();
-	circle.draw();
+	
 
 }
