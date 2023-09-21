@@ -434,7 +434,7 @@ public:
 void main() 
 {
 	setlocale(LC_ALL, "");
-
+ 
 	Square square(150,Color::red,300,10,5);
 	//std::cout << "Длинна стороны: " << square.get_side() << std::endl;
 	//std::cout << "Периметр: " << square.get_perimeter() << std::endl;
