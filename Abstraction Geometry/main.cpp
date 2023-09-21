@@ -1,5 +1,8 @@
+#define _USE_MATH_DEFINES
 #include<iostream>
 #include<Windows.h>
+
+#define delimiter "\n_____________________\n"
 
 			//enum  (Enumeration - Перечисление) это набор нумерованных целочисленных констант
 enum Color
@@ -15,6 +18,8 @@ enum Color
 #define SHAPE_GIVE_PARAMETERS  color,  start_x, start_y,  line_width
 class Shape 
 {
+protected:
+
 	static const int MIN_START_X = 10;
 	static const int MAX_START_X = 800;
 
@@ -23,7 +28,10 @@ class Shape
 
 	static const int MIN_LINE_WIDTH = 1;
 	static const int MAX_LINE_WIDTH = 30;
-protected:
+
+	static const int MIN_DEMENSION = 25;
+	static const int MAX_DEMENSION = 500;
+
 	Color color;
 	int start_x;
 	int start_y;
@@ -91,12 +99,14 @@ public:
 	}
 
 };
-class Square : public Shape 
+//#define Square_DONE
+#ifdef Square_DONE
+class Square : public Shape
 {
 	double side;
 
 public:
-	double get_side()const 
+	double get_side()const
 	{
 		return side;
 	}
@@ -104,15 +114,15 @@ public:
 	{
 		this->side = side;
 	}
-		//Constructors
+	//Constructors
 
-	Square(double side, SHAPE_TAKE_PARAMETERS):Shape(SHAPE_GIVE_PARAMETERS)
+	Square(double side, SHAPE_TAKE_PARAMETERS) :Shape(SHAPE_GIVE_PARAMETERS)
 	{
 		set_side(side);
 	}
-	~Square(){}
+	~Square() {}
 
-				//Methods
+	//Methods
 	void info()const
 	{
 		std::cout << "Длина стороны:" << get_side() << std::endl;
@@ -120,6 +130,7 @@ public:
 		std::cout << typeid(*this).name() << std::endl;
 		std::cout << std::endl;
 	}
+
 
 		//Clear Virtual Methods			
 
@@ -166,9 +177,11 @@ public:
 	
 
 };
+#endif // Square_DONE
 
 #define RECTANGLE_TAKE_PARAMETERS double side_a, double side_b
 #define RECTANGLE_GIVE_PARAMETERS  side_a,  side_b
+
 class Rectangle :public Shape 
 {
 	double side_a;
@@ -184,10 +197,14 @@ public:
 	}
 	void set_side_a(double side_a) 
 	{
+		if (side_a < MIN_DEMENSION)side_a = MIN_DEMENSION;
+		if (side_a > MAX_DEMENSION)side_a = MAX_DEMENSION;
 		this->side_a = side_a;
 	}
 	void set_side_b(double side_b)
 	{
+		if (side_b < MIN_DEMENSION)side_b = MIN_DEMENSION;
+		if (side_b > MAX_DEMENSION)side_b = MAX_DEMENSION;
 		this->side_b = side_b;
 	}
 	double get_area()const override 
@@ -197,6 +214,10 @@ public:
 	double get_perimeter()const override 
 	{
 		return (side_a + side_b) * 2;
+	}
+	double get_diagonal() const 
+	{
+		return sqrt(side_a * side_a + side_b * side_b);
 	}
 
 	void draw()const override
@@ -236,9 +257,10 @@ public:
 	{
 		std::cout << "Сторона a: " << get_side_a() << std::endl;
 		std::cout << "Сторона b: " << get_side_b() << std::endl;
+		std::cout << "Диагональ: " << get_diagonal() << std::endl;
 		Shape::info();
 		std::cout << typeid(*this).name() << std::endl;
-		std::cout << std::endl;
+		
 	}
 
 };
@@ -256,16 +278,19 @@ public:
 	}
 	void set_radius(double radius)
 	{
+		if (radius < MIN_DEMENSION) radius = MIN_DEMENSION;
+		if (radius > MAX_DEMENSION) radius = MAX_DEMENSION;
 		this->radius = radius;
 	}
+	
 
 	//Constructors
 	
 	Circle(double radius, SHAPE_TAKE_PARAMETERS) :Shape(SHAPE_GIVE_PARAMETERS) 
 	{
-		set_color(color);
-		set_start_x(start_x);
-		set_start_y(start_y);
+		//set_color(color);
+		//set_start_x(start_x);
+		//set_start_y(start_y);
 		set_radius(radius);
 	}
 
@@ -278,8 +303,9 @@ public:
 	{
 		std::cout << "Диаметер окружности : " << get_diameter() << std::endl;
 		std::cout << "Радиус окружности: " << get_radius() << std::endl;
+		Shape::info();
 		std::cout << typeid(*this).name() << std::endl;
-		std::cout << std::endl;
+		
 
 	}
 	double get_diameter()const
@@ -291,11 +317,11 @@ public:
 
 	double get_area()const override
 	{
-		return 3.14 * (radius * radius);
+		return M_PI * pow(radius,2);
 	}
 	double get_perimeter()const override
 	{
-		return sqrt((get_area() * 4) * 3.14);
+		return sqrt((get_area() * 4) * M_PI);
 	}
 	void draw()const override
 	{
@@ -309,7 +335,7 @@ public:
 		SelectObject(hdc, hPen);
 		SelectObject(hdc, hBrush);
 
-		Ellipse(hdc, start_x, start_y, start_x + radius, start_y + radius);
+		Ellipse(hdc, start_x, start_y, start_x + get_diameter(), start_y + get_diameter());
 
 		DeleteObject(hPen);
 		DeleteObject(hBrush);
@@ -319,29 +345,41 @@ public:
 
 
 };
+class Square:public Rectangle 
+{
+public:
+	Square(double side, SHAPE_TAKE_PARAMETERS): Rectangle(side,side,SHAPE_GIVE_PARAMETERS){}
+	~Square(){}
+};
 
 void main() 
 {
 	setlocale(LC_ALL, "");
 
-	Square square(250,Color::red,100,300,5);
+	Square square(150,Color::red,100,700,5);
 	//std::cout << "Длинна стороны: " << square.get_side() << std::endl;
 	//std::cout << "Периметр: " << square.get_perimeter() << std::endl;
 	//std::cout << "Площадь: " << square.get_area() << std::endl;
 	//std::cout << std::endl;
 	square.info();
+	std::cout << delimiter << std::endl;
 	
 	
-	class Rectangle rect(250, 350, Color::blue, 500, 300, 5);  //x  , y Размер, цвет, расположение на экране
+	
+	class Rectangle rect(150, 200, Color::blue, 500, 700, 5);  //x  , y Размер, цвет, расположение на экране
 	//std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
 	//std::cout << "Сторона b: " << rect.get_side_b() << std::endl;
 	//std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
 	//std::cout << "Площадь: " << rect.get_area() << std::endl;
 	rect.info();
+	std::cout << delimiter << std::endl;
+	
 	
 
-	Circle circle(250, Color::white, 800, 300, 5);
+	Circle circle(75, Color::white, 300, 700, 5);
 	circle.info();
+	std::cout << delimiter << std::endl;
+	
 	
 
 }
