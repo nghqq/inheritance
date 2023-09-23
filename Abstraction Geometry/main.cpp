@@ -431,6 +431,95 @@ public:
 	}
 };
 
+class RightTriangle : public Triangle
+{
+	double cat_1;
+	double cat_2;
+
+public:
+	double get_cat_1()const 
+	{
+		return cat_1;
+	}
+	void set_cat_1(double cat_1)
+	{
+		if (cat_1 < MIN_DEMENSION)cat_1 = MIN_DEMENSION;
+		if (cat_1 > MAX_DEMENSION)cat_1 = MAX_DEMENSION;
+		this->cat_1 = cat_1;
+	}
+	double get_cat_2()const
+	{
+		return cat_2;
+	}
+	void set_cat_2(double cat_2) 
+	{
+		if (cat_2 < MIN_DEMENSION)cat_2 = MIN_DEMENSION;
+		if (cat_2 > MAX_DEMENSION)cat_2 = MAX_DEMENSION;
+		this->cat_2 = cat_2;
+	}
+	double get_hypotenuse()const 
+	{
+		return sqrt(pow(cat_1, 2) + pow(cat_2, 2));
+	}
+	double get_height()const override 
+	{
+		return (cat_1 * cat_2) / get_hypotenuse();
+	}
+	double get_area()const override
+	{
+		return (cat_1 * cat_2) / 2;
+	}
+	double get_perimeter()const override
+	{
+		return cat_1 + cat_2 + get_hypotenuse();
+	}
+	void draw() const override
+	{
+		HWND hwnd = GetConsoleWindow();
+		HDC hdc = GetDC(hwnd);
+
+		HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+		HBRUSH hBrush = CreateSolidBrush(color);
+
+
+		SelectObject(hdc, hPen);
+		SelectObject(hdc, hBrush);
+
+		POINT vertex[] =
+		{
+			{start_x,start_y + cat_2},
+			{start_x + cat_1,start_y + cat_2},
+			{start_x + cat_1 / 2,start_y + cat_2 - get_height()}
+		};
+		::Polygon(hdc, vertex, 3);
+
+		DeleteObject(hPen);
+		DeleteObject(hBrush);
+
+		ReleaseDC(hwnd, hdc);
+	}
+
+		//Constructor
+
+	RightTriangle(double cat_1, double cat_2, SHAPE_TAKE_PARAMETERS) : Triangle(SHAPE_GIVE_PARAMETERS)
+		{
+		set_cat_1(cat_1);
+		set_cat_2(cat_2);
+		}
+	~RightTriangle(){}
+
+	void info()const
+	{
+		std::cout << typeid(*this).name() << std::endl;
+		std::cout << "Длина катета 1 : " << cat_1 << std::endl;
+		std::cout << "Длина катета 2 : " << cat_2 << std::endl;
+		std::cout << "Гипотинуза  : " << get_hypotenuse() << std::endl;
+		Triangle::info();
+	}
+
+
+};
+
 void main() 
 {
 	setlocale(LC_ALL, "");
@@ -463,5 +552,8 @@ void main()
 	et.info();
 	std::cout << delimiter << std::endl;
 	
+	RightTriangle rt(150, 200, Color::red, 800, 170, 5);
+	rt.info();
+	std::cout << delimiter << std::endl;
 
 }
