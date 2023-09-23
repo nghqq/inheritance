@@ -487,14 +487,11 @@ public:
 
 		POINT vertex[] =
 		{
-			{start_x,start_y+get_hypotenuse()},
-			{start_x + cat_2,start_y + cat_2},
+			{start_x,start_y + get_hypotenuse()},
+			{start_x + cat_2,start_y + cat_1},
 			{start_x + cat_2 / 2,start_y + cat_1 - get_height()}
 			
-			
-			
-			
-			
+		
 		};
 		::Polygon(hdc, vertex, 3);
 
