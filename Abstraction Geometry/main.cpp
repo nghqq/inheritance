@@ -93,7 +93,7 @@ public:
 		SelectObject(hdc, hPen);
 		SelectObject(hdc, hBrush);
 
-		DrawingFunction(hdc, start_x, start_y, start_x + dimensions[1], start_y + dimensions[2]);
+		DrawingFunction(hdc, start_x, start_y, start_x + dimensions[0], start_y + dimensions[1]);
 
 		DeleteObject(hPen);
 		DeleteObject(hBrush);
