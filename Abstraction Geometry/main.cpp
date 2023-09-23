@@ -36,7 +36,9 @@ protected:
 	int start_x;
 	int start_y;
 	int line_width;
-
+	
+	 BOOL(__stdcall* DrawingFunction)(HDC, int, int, int, int);
+	 int dimensions[2]{};
 public:
 	Color get_color()const 
 	{
@@ -78,7 +80,26 @@ public:
 	}
 	virtual double get_area() const = 0;
 	virtual double get_perimeter()const = 0;
-	virtual void draw()const = 0;
+	//virtual void draw()const = 0;
+	 virtual void draw()const 
+	{
+		HWND hwnd = GetConsoleWindow();
+		HDC hdc = GetDC(hwnd);
+
+		HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+		HBRUSH hBrush = CreateSolidBrush(color);
+
+
+		SelectObject(hdc, hPen);
+		SelectObject(hdc, hBrush);
+
+		DrawingFunction(hdc, start_x, start_y, start_x + dimensions[1], start_y + dimensions[2]);
+
+		DeleteObject(hPen);
+		DeleteObject(hBrush);
+
+		ReleaseDC(hwnd, hdc);
+	}
 			//Constuctors
 	Shape(SHAPE_TAKE_PARAMETERS) :color(color) 
 	{
@@ -248,6 +269,7 @@ public:
 		set_start_y(start_y);
 		set_side_a(side_a);
 		set_side_b(side_b);
+		DrawingFunction = ::Rectangle;
 	} 
 	~Rectangle(){}
 
@@ -292,6 +314,7 @@ public:
 		//set_start_x(start_x);
 		//set_start_y(start_y);
 		set_radius(radius);
+		DrawingFunction = ::Circle;
 	}
 
 	//Destructor
