@@ -79,7 +79,7 @@ public:
 	virtual double get_area() const = 0;
 	virtual double get_perimeter()const = 0;
 	virtual void draw()const = 0;
-	void draw(WINGDIAPI BOOL(__fastcall *DrawFunction)(HDC,int,int,int,int),double horizontal,double vertical)const
+	void draw(WINGDIAPI BOOL(__stdcall *DrawFunction)(HDC,int,int,int,int),double horizontal,double vertical)const
 	{
 		HWND hwnd = GetConsoleWindow();
 		HDC hdc = GetDC(hwnd);
