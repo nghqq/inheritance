@@ -487,9 +487,9 @@ public:
 
 		POINT vertex[] =
 		{
-			{start_x,start_y + get_hypotenuse()},
-			{start_x + cat_2,start_y + cat_1},
-			{start_x + cat_2 / 2,start_y + cat_1 - get_height()}
+			{start_x,start_y + cat_1},
+			{start_x + cat_2,start_y + cat_2},
+			{start_x + cat_1 / 2,start_y + cat_1 - get_height()}
 			
 		
 		};
@@ -515,7 +515,7 @@ public:
 		std::cout << typeid(*this).name() << std::endl;
 		std::cout << "Длина катета 1 : " << cat_1 << std::endl;
 		std::cout << "Длина катета 2 : " << cat_2 << std::endl;
-		std::cout << "Гипотинуза  : " << get_hypotenuse() << std::endl;
+		std::cout << "Гипотинуза : " << get_hypotenuse() << std::endl;
 		Triangle::info();
 	}
 
