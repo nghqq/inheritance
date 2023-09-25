@@ -581,12 +581,14 @@ public:
 			{start_x + side_a,start_y + side_b},
 			{start_x + side_a / 2,start_y + side_b - get_height()},
 
-			
+			{start_x,start_y + side_b},
+			{start_x + side_a,start_y + side_b},
+			{start_x + side_a / 2,start_y + side_b - get_height()}
 			
 
 
 		};
-		::Polygon(hdc, vertex, 3);
+		::Polygon(hdc, vertex, 6);
 
 		DeleteObject(hPen);
 		DeleteObject(hBrush);
