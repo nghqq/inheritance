@@ -1,6 +1,7 @@
 #define _USE_MATH_DEFINES
 #include<iostream>
 #include<Windows.h>
+#include <math.h>
 
 #define delimiter "\n_____________________\n"
 
@@ -521,6 +522,96 @@ public:
 
 
 };
+class Parallelogram : public Triangle 
+{
+	double side_a;
+	double side_b;
+public:
+	double get_side_a()const 
+	{
+		return side_a;
+	}
+	double get_side_b()const 
+	{
+		return side_b;
+	}
+	void set_side_a(double side_a) 
+	{
+		if (side_a < MIN_DEMENSION)side_a = MIN_DEMENSION;
+		if (side_a > MAX_DEMENSION)side_a = MAX_DEMENSION;
+		this->side_a = side_a;
+	}
+	void set_side_b(double side_b)
+	{
+		if (side_b < MIN_DEMENSION)side_b = MIN_DEMENSION;
+		if (side_b > MAX_DEMENSION)side_b = MAX_DEMENSION;
+		this->side_b = side_b;
+	}
+	double get_area()const override
+	{
+		return side_a * get_height();
+	}
+	double get_perimeter()const override
+	{
+		return (side_a + side_b) * 2;
+	}
+	double get_height()const override
+	{
+		 return (side_a * side_b) / get_hypotenuse();
+	}
+	double get_hypotenuse()const
+	{
+		return sqrt(pow(side_a, 2) + pow(side_b, 2));
+	}
+	void draw() const override
+	{
+		HWND hwnd = GetConsoleWindow();
+		HDC hdc = GetDC(hwnd);
+
+		HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+		HBRUSH hBrush = CreateSolidBrush(color);
+
+
+		SelectObject(hdc, hPen);
+		SelectObject(hdc, hBrush);
+
+		POINT vertex[] =
+		{
+			{start_x,start_y + side_b},
+			{start_x + side_a,start_y + side_b},
+			{start_x + side_a / 2,start_y + side_b - get_height()},
+
+			
+			
+
+
+		};
+		::Polygon(hdc, vertex, 3);
+
+		DeleteObject(hPen);
+		DeleteObject(hBrush);
+
+		ReleaseDC(hwnd, hdc);
+	}
+	//Constructor
+
+	Parallelogram(double side_a, double side_b, SHAPE_TAKE_PARAMETERS) : Triangle(SHAPE_GIVE_PARAMETERS)
+	{
+		set_side_a(side_a);
+		set_side_b(side_b);
+	}
+	~Parallelogram() {}
+
+	void info()const
+	{
+		std::cout << typeid(*this).name() << std::endl;
+		std::cout << "Сторона a : " << side_a << std::endl;
+		std::cout << "Сторона b : " << side_b << std::endl;
+		std::cout << "Гипотинуза : " << get_hypotenuse() << std::endl;
+		Triangle::info();
+	}
+
+};
 
 void main() 
 {
@@ -556,6 +647,10 @@ void main()
 	
 	RightTriangle rt(100, 75, Color::red, 800, 250, 5);
 	rt.info();
+	std::cout << delimiter << std::endl;
+
+	Parallelogram pa(100, 75, Color::blue, 800, 450, 5);
+	pa.info();
 	std::cout << delimiter << std::endl;
 
 }
