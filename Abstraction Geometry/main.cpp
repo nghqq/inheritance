@@ -1,11 +1,11 @@
-#define _USE_MATH_DEFINES
+п»ї#define _USE_MATH_DEFINES
 #include<iostream>
 #include<Windows.h>
 #include <math.h>
 
 #define delimiter "\n_____________________\n"
 
-			//enum  (Enumeration - Перечисление) это набор нумерованных целочисленных констант
+			//enum  (Enumeration - РџРµСЂРµС‡РёСЃР»РµРЅРёРµ) СЌС‚Рѕ РЅР°Р±РѕСЂ РЅСѓРјРµСЂРѕРІР°РЅРЅС‹С… С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹С… РєРѕРЅСЃС‚Р°РЅС‚
 enum Color
 {
 	red		=	0x000000FF,
@@ -93,8 +93,8 @@ public:
 	void info()const
 	{
 		
-		std::cout << "Периметр фигуры: " << get_perimeter() << std::endl;
-		std::cout << "Площадь фигуры: " << get_area() << std::endl;
+		std::cout << "РџРµСЂРёРјРµС‚СЂ С„РёРіСѓСЂС‹: " << get_perimeter() << std::endl;
+		std::cout << "РџР»РѕС‰Р°РґСЊ С„РёРіСѓСЂС‹: " << get_area() << std::endl;
 		draw();
 
 	}
@@ -126,7 +126,7 @@ public:
 	//Methods
 	void info()const
 	{
-		std::cout << "Длина стороны:" << get_side() << std::endl;
+		std::cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹:" << get_side() << std::endl;
 		Shape::info();
 		std::cout << typeid(*this).name() << std::endl;
 		std::cout << std::endl;
@@ -153,26 +153,26 @@ public:
 			}
 			std::cout << std::endl;
 		}*/
-		HWND hwnd = GetConsoleWindow(); // 1) Получаем окно консоли 
-		HDC hdc = GetDC(hwnd);			// 2) Получаем контекст устройства для окна консоли
+		HWND hwnd = GetConsoleWindow(); // 1) РџРѕР»СѓС‡Р°РµРј РѕРєРЅРѕ РєРѕРЅСЃРѕР»Рё 
+		HDC hdc = GetDC(hwnd);			// 2) РџРѕР»СѓС‡Р°РµРј РєРѕРЅС‚РµРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР° РґР»СЏ РѕРєРЅР° РєРѕРЅСЃРѕР»Рё
 
-		HPEN hPen = CreatePen(PS_SOLID, line_width, color);   //3) Создаем карандаш, который рисует контур фигуры
-		HBRUSH hBrush = CreateSolidBrush(color);	  //4) Создаем кисть, которая рисует заливку фигуры
-		//5) Выбираем, чем и на чём рисовать. Рисуют всегда на контексте устройства для рисования используем карандаш и кисть 
+		HPEN hPen = CreatePen(PS_SOLID, line_width, color);   //3) РЎРѕР·РґР°РµРј РєР°СЂР°РЅРґР°С€, РєРѕС‚РѕСЂС‹Р№ СЂРёСЃСѓРµС‚ РєРѕРЅС‚СѓСЂ С„РёРіСѓСЂС‹
+		HBRUSH hBrush = CreateSolidBrush(color);	  //4) РЎРѕР·РґР°РµРј РєРёСЃС‚СЊ, РєРѕС‚РѕСЂР°СЏ СЂРёСЃСѓРµС‚ Р·Р°Р»РёРІРєСѓ С„РёРіСѓСЂС‹
+		//5) Р’С‹Р±РёСЂР°РµРј, С‡РµРј Рё РЅР° С‡С‘Рј СЂРёСЃРѕРІР°С‚СЊ. Р РёСЃСѓСЋС‚ РІСЃРµРіРґР° РЅР° РєРѕРЅС‚РµРєСЃС‚Рµ СѓСЃС‚СЂРѕР№СЃС‚РІР° РґР»СЏ СЂРёСЃРѕРІР°РЅРёСЏ РёСЃРїРѕР»СЊР·СѓРµРј РєР°СЂР°РЅРґР°С€ Рё РєРёСЃС‚СЊ 
 		SelectObject(hdc, hPen);
 		SelectObject(hdc, hBrush);
 
-		//6) Рисуем прямоугольник. Для его рисования нужно указать его координаты верхнего-левого угла и правого-нижнего угла
+		//6) Р РёСЃСѓРµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє. Р”Р»СЏ РµРіРѕ СЂРёСЃРѕРІР°РЅРёСЏ РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РµРіРѕ РєРѕРѕСЂРґРёРЅР°С‚С‹ РІРµСЂС…РЅРµРіРѕ-Р»РµРІРѕРіРѕ СѓРіР»Р° Рё РїСЂР°РІРѕРіРѕ-РЅРёР¶РЅРµРіРѕ СѓРіР»Р°
 		Rectangle(hdc, start_x, start_y, start_x+side, start_y+side);
 
-		 //7) Удаляем все созданные инструменты: 
+		 //7) РЈРґР°Р»СЏРµРј РІСЃРµ СЃРѕР·РґР°РЅРЅС‹Рµ РёРЅСЃС‚СЂСѓРјРµРЅС‚С‹: 
 		DeleteObject(hBrush);
 		DeleteObject(hPen);
 
-		//8) Осовобождаем контекст устройства 
+		//8) РћСЃРѕРІРѕР±РѕР¶РґР°РµРј РєРѕРЅС‚РµРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР° 
 		ReleaseDC(hwnd, hdc);
 
-		// Констекст устройства и все инструменты занимают ресурсы, а ресурсы нужно освобождать.
+		// РљРѕРЅСЃС‚РµРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР° Рё РІСЃРµ РёРЅСЃС‚СЂСѓРјРµРЅС‚С‹ Р·Р°РЅРёРјР°СЋС‚ СЂРµСЃСѓСЂСЃС‹, Р° СЂРµСЃСѓСЂСЃС‹ РЅСѓР¶РЅРѕ РѕСЃРІРѕР±РѕР¶РґР°С‚СЊ.
 	}
 	
 	
@@ -256,9 +256,9 @@ public:
 
 	void info()const
 	{
-		std::cout << "Сторона a: " << get_side_a() << std::endl;
-		std::cout << "Сторона b: " << get_side_b() << std::endl;
-		std::cout << "Диагональ: " << get_diagonal() << std::endl;
+		std::cout << "РЎС‚РѕСЂРѕРЅР° a: " << get_side_a() << std::endl;
+		std::cout << "РЎС‚РѕСЂРѕРЅР° b: " << get_side_b() << std::endl;
+		std::cout << "Р”РёР°РіРѕРЅР°Р»СЊ: " << get_diagonal() << std::endl;
 		Shape::info();
 		std::cout << typeid(*this).name() << std::endl;
 		
@@ -302,8 +302,8 @@ public:
 
 	void info()const
 	{
-		std::cout << "Диаметер окружности : " << get_diameter() << std::endl;
-		std::cout << "Радиус окружности: " << get_radius() << std::endl;
+		std::cout << "Р”РёР°РјРµС‚РµСЂ РѕРєСЂСѓР¶РЅРѕСЃС‚Рё : " << get_diameter() << std::endl;
+		std::cout << "Р Р°РґРёСѓСЃ РѕРєСЂСѓР¶РЅРѕСЃС‚Рё: " << get_radius() << std::endl;
 		Shape::info();
 		std::cout << typeid(*this).name() << std::endl;
 		
@@ -362,7 +362,7 @@ public:
 	
 	void info()const 
 	{
-		std::cout << "Высота треугольника: " << get_height() << std::endl;
+		std::cout << "Р’С‹СЃРѕС‚Р° С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°: " << get_height() << std::endl;
 		Shape::info();
 	}
 };
@@ -427,7 +427,7 @@ public:
 	void info()const 
 	{
 		std::cout << typeid(*this).name() << std::endl;
-		std::cout << "Длина стороны: " << side << std::endl;
+		std::cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹: " << side << std::endl;
 		Triangle::info();
 	}
 };
@@ -514,9 +514,9 @@ public:
 	void info()const
 	{
 		std::cout << typeid(*this).name() << std::endl;
-		std::cout << "Длина катета 1 : " << cat_1 << std::endl;
-		std::cout << "Длина катета 2 : " << cat_2 << std::endl;
-		std::cout << "Гипотинуза : " << get_hypotenuse() << std::endl;
+		std::cout << "Р”Р»РёРЅР° РєР°С‚РµС‚Р° 1 : " << cat_1 << std::endl;
+		std::cout << "Р”Р»РёРЅР° РєР°С‚РµС‚Р° 2 : " << cat_2 << std::endl;
+		std::cout << "Р“РёРїРѕС‚РёРЅСѓР·Р° : " << get_hypotenuse() << std::endl;
 		Triangle::info();
 	}
 
@@ -606,9 +606,9 @@ public:
 	void info()const
 	{
 		std::cout << typeid(*this).name() << std::endl;
-		std::cout << "Сторона a : " << side_a << std::endl;
-		std::cout << "Сторона b : " << side_b << std::endl;
-		std::cout << "Гипотинуза : " << get_hypotenuse() << std::endl;
+		std::cout << "РЎС‚РѕСЂРѕРЅР° a : " << side_a << std::endl;
+		std::cout << "РЎС‚РѕСЂРѕРЅР° b : " << side_b << std::endl;
+		std::cout << "Р“РёРїРѕС‚РёРЅСѓР·Р° : " << get_hypotenuse() << std::endl;
 		Triangle::info();
 	}
 
@@ -619,20 +619,20 @@ void main()
 	setlocale(LC_ALL, "");
  
 	Square square(150,Color::red,300,10,5);
-	//std::cout << "Длинна стороны: " << square.get_side() << std::endl;
-	//std::cout << "Периметр: " << square.get_perimeter() << std::endl;
-	//std::cout << "Площадь: " << square.get_area() << std::endl;
+	//std::cout << "Р”Р»РёРЅРЅР° СЃС‚РѕСЂРѕРЅС‹: " << square.get_side() << std::endl;
+	//std::cout << "РџРµСЂРёРјРµС‚СЂ: " << square.get_perimeter() << std::endl;
+	//std::cout << "РџР»РѕС‰Р°РґСЊ: " << square.get_area() << std::endl;
 	//std::cout << std::endl;
 	square.info();
 	std::cout << delimiter << std::endl;
 	
 	
 	
-	class Rectangle rect(150, 200, Color::blue, 700, 10, 5);  //x  , y Размер, цвет, расположение на экране
-	//std::cout << "Сторона a : " << rect.get_side_a() << std::endl;
-	//std::cout << "Сторона b: " << rect.get_side_b() << std::endl;
-	//std::cout << "Периметр: " << rect.get_perimeter() << std::endl;
-	//std::cout << "Площадь: " << rect.get_area() << std::endl;
+	class Rectangle rect(150, 200, Color::blue, 700, 10, 5);  //x  , y Р Р°Р·РјРµСЂ, С†РІРµС‚, СЂР°СЃРїРѕР»РѕР¶РµРЅРёРµ РЅР° СЌРєСЂР°РЅРµ
+	//std::cout << "РЎС‚РѕСЂРѕРЅР° a : " << rect.get_side_a() << std::endl;
+	//std::cout << "РЎС‚РѕСЂРѕРЅР° b: " << rect.get_side_b() << std::endl;
+	//std::cout << "РџРµСЂРёРјРµС‚СЂ: " << rect.get_perimeter() << std::endl;
+	//std::cout << "РџР»РѕС‰Р°РґСЊ: " << rect.get_area() << std::endl;
 	rect.info();
 	std::cout << delimiter << std::endl;
 	
